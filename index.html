@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pricing Page Maker | Indie Agent Kit</title>
+  <meta name="description" content="Enter product name, three plans, prices, and feature bullets. Get a clean pricing section HTML you can download. Client-side only. Free tool from Indie Agent Kit / boltdoesthis." />
+  <meta name="theme-color" content="#0f1115" />
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #171a21;
+      --panel-2: #1e2330;
+      --border: #2a3142;
+      --text: #e8ecf4;
+      --muted: #9aa3b5;
+      --accent: #6ee7b7;
+      --accent-dim: #34d399;
+      --radius: 12px;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      background: radial-gradient(1200px 600px at 10% -10%, #1a2740 0%, transparent 55%),
+                  radial-gradient(900px 500px at 100% 0%, #13281f 0%, transparent 50%),
+                  var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    a { color: var(--accent); }
+    a:hover { color: var(--accent-dim); }
+
+    .wrap {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 20px 64px;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 1.55rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 58ch;
+      font-size: 0.95rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: rgba(110, 231, 183, 0.08);
+      border: 1px solid rgba(110, 231, 183, 0.25);
+      padding: 4px 10px;
+      border-radius: 999px;
+      width: fit-content;
+    }
+
+    .cta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--muted);
+      font-size: 0.85rem;
+      text-decoration: none;
+      max-width: 320px;
+    }
+
+    .cta-chip:hover {
+      border-color: rgba(110, 231, 183, 0.35);
+      color: var(--text);
+    }
+
+    .cta-chip strong { color: var(--accent); font-weight: 600; }
+
+    details.help {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    details.help summary {
+      cursor: pointer;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    details.help ul { margin: 10px 0 0; padding-left: 1.2rem; }
+    details.help li { margin: 4px 0; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(320px, 420px) 1fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 480px;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--panel-2);
+      flex-wrap: wrap;
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .panel-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex: 1;
+    }
+
+    .panel-body.scroll {
+      overflow: auto;
+      max-height: calc(100vh - 220px);
+    }
+
+    label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      background: #0c0e13;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font: inherit;
+      outline: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: rgba(110, 231, 183, 0.45);
+    }
+
+    textarea {
+      min-height: 88px;
+      resize: vertical;
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      line-height: 1.45;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .row3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 520px) {
+      .row, .row3 { grid-template-columns: 1fr; }
+    }
+
+    .plan-block {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      background: rgba(12, 14, 19, 0.55);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .plan-block h3 {
+      margin: 0;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--text);
+    }
+
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      user-select: none;
+    }
+
+    .check input { accent-color: var(--accent); width: auto; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    button {
+      font: inherit;
+      font-size: 0.88rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--text);
+      padding: 9px 14px;
+      cursor: pointer;
+    }
+
+    button:hover { border-color: #3d4660; }
+
+    button.primary {
+      background: linear-gradient(180deg, #3ecf9a, #2bb87f);
+      color: #042016;
+      border-color: transparent;
+      font-weight: 600;
+    }
+
+    button.primary:hover { filter: brightness(1.06); }
+
+    button.ghost {
+      background: transparent;
+    }
+
+    .hint {
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .preview-frame {
+      background: #0a0c10;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: auto;
+      min-height: 420px;
+      flex: 1;
+    }
+
+    .preview-frame iframe {
+      width: 100%;
+      min-height: 560px;
+      border: 0;
+      display: block;
+      background: transparent;
+    }
+
+    footer {
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 24px;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #12261d;
+      color: var(--accent);
+      border: 1px solid rgba(110, 231, 183, 0.35);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity 0.2s, transform 0.2s;
+      z-index: 50;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <span class="badge">Free micro-tool · client-side only</span>
+        <h1>Pricing Page Maker</h1>
+        <p>Enter a product name, three plans, prices, and feature bullets. Preview a clean pricing section, then download a standalone HTML page. Nothing leaves your browser.</p>
+      </div>
+      <a class="cta-chip" href="https://boltdoesthis.github.io/indie-agent-services/" target="_blank" rel="noopener">
+        Need a hand shipping? <strong>Indie Agent Services</strong>
+      </a>
+    </header>
+
+    <details class="help">
+      <summary>How to use this</summary>
+      <ul>
+        <li>Fill product name and a short tagline.</li>
+        <li>Edit the three plans: name, price, period, CTA label, and one feature per line.</li>
+        <li>Mark one plan as Featured if you want it highlighted.</li>
+        <li>Pick a theme (Ink, Mint, or Paper). Preview updates live.</li>
+        <li>Download a full HTML page, or copy just the pricing section snippet.</li>
+        <li>Part of <strong>Indie Agent Kit</strong> / boltdoesthis free tools.</li>
+      </ul>
+    </details>
+
+    <div class="layout">
+      <section class="panel" aria-label="Input">
+        <div class="panel-head">
+          <h2>Plans &amp; copy</h2>
+          <div class="actions">
+            <button type="button" class="ghost" id="btnSample">Load sample</button>
+            <button type="button" class="ghost" id="btnClear">Clear</button>
+          </div>
+        </div>
+        <div class="panel-body scroll">
+          <div class="row">
+            <div>
+              <label for="productName">Product name</label>
+              <input type="text" id="productName" placeholder="e.g. Ship Kit" />
+            </div>
+            <div>
+              <label for="theme">Theme</label>
+              <select id="theme">
+                <option value="ink">Ink</option>
+                <option value="mint">Mint</option>
+                <option value="paper">Paper</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label for="tagline">Tagline / section subtitle</label>
+            <input type="text" id="tagline" placeholder="Simple pricing. Ship faster." />
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="currency">Currency symbol</label>
+              <input type="text" id="currency" value="$" maxlength="3" />
+            </div>
+            <div>
+              <label for="footerNote">Footer note (optional)</label>
+              <input type="text" id="footerNote" placeholder="Cancel anytime. No credit card for free tier." />
+            </div>
+          </div>
+
+          <div id="plansMount"></div>
+
+          <div class="actions">
+            <button type="button" class="primary" id="btnDownload">Download HTML page</button>
+            <button type="button" id="btnCopySnippet">Copy section snippet</button>
+          </div>
+          <p class="hint">Tip: keep each plan to 3-5 short bullets. One featured plan looks best.</p>
+        </div>
+      </section>
+
+      <section class="panel" aria-label="Preview">
+        <div class="panel-head">
+          <h2>Live preview</h2>
+          <div class="actions">
+            <button type="button" class="ghost" id="btnRefresh">Refresh</button>
+          </div>
+        </div>
+        <div class="panel-body" style="padding:12px;">
+          <div class="preview-frame">
+            <iframe id="preview" title="Pricing preview" sandbox=""></iframe>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <span>Pricing Page Maker · free micro-tool from <strong>Indie Agent Kit</strong> / boltdoesthis</span>
+      <span>
+        <a href="https://boltdoesthis.github.io/indie-agent-services/">Indie Agent Services</a>
+        · runs fully in your browser · MIT
+      </span>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+(function () {
+  const THEMES = {
+    ink: {
+      bg: "#0f1115",
+      card: "#171a21",
+      cardHi: "#1c2433",
+      border: "#2a3142",
+      text: "#e8ecf4",
+      muted: "#9aa3b5",
+      accent: "#6ee7b7",
+      accentText: "#042016",
+      btn: "#6ee7b7",
+      btnText: "#042016",
+      soft: "rgba(110,231,183,0.12)"
+    },
+    mint: {
+      bg: "#f3fbf7",
+      card: "#ffffff",
+      cardHi: "#ecfdf5",
+      border: "#c7e9d9",
+      text: "#0f1f17",
+      muted: "#4b6b5c",
+      accent: "#059669",
+      accentText: "#ffffff",
+      btn: "#059669",
+      btnText: "#ffffff",
+      soft: "rgba(5,150,105,0.12)"
+    },
+    paper: {
+      bg: "#f7f4ef",
+      card: "#ffffff",
+      cardHi: "#fff8eb",
+      border: "#e5ddd0",
+      text: "#1c1917",
+      muted: "#78716c",
+      accent: "#c2410c",
+      accentText: "#fff7ed",
+      btn: "#1c1917",
+      btnText: "#fafaf9",
+      soft: "rgba(194,65,12,0.10)"
+    }
+  };
+
+  const DEFAULT_PLANS = [
+    {
+      name: "Starter",
+      price: "0",
+      period: "/mo",
+      cta: "Start free",
+      featured: false,
+      features: "1 project\nBasic export\nCommunity support"
+    },
+    {
+      name: "Pro",
+      price: "29",
+      period: "/mo",
+      cta: "Go Pro",
+      featured: true,
+      features: "Unlimited projects\nPriority export\nEmail support\nCustom themes"
+    },
+    {
+      name: "Team",
+      price: "79",
+      period: "/mo",
+      cta: "Talk to us",
+      featured: false,
+      features: "Everything in Pro\nShared workspace\nSSO-ready hooks\nPriority support"
+    }
+  ];
+
+  const plansMount = document.getElementById("plansMount");
+  const productName = document.getElementById("productName");
+  const tagline = document.getElementById("tagline");
+  const theme = document.getElementById("theme");
+  const currency = document.getElementById("currency");
+  const footerNote = document.getElementById("footerNote");
+  const preview = document.getElementById("preview");
+  const toast = document.getElementById("toast");
+
+  function escapeHtml(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function slugify(s) {
+    return String(s || "pricing")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "") || "pricing";
+  }
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => toast.classList.remove("show"), 1800);
+  }
+
+  function planFields(i, data) {
+    const d = data || DEFAULT_PLANS[i] || { name: "", price: "", period: "/mo", cta: "Get started", featured: false, features: "" };
+    return (
+      '<div class="plan-block" data-plan="' + i + '">' +
+        "<h3>Plan " + (i + 1) +
+          '<label class="check"><input type="radio" name="featured" value="' + i + '"' + (d.featured ? " checked" : "") + " /> Featured</label>" +
+        "</h3>" +
+        '<div class="row3">' +
+          "<div><label>Plan name</label><input type=\"text\" data-f=\"name\" value=\"" + escapeHtml(d.name) + "\" /></div>" +
+          "<div><label>Price</label><input type=\"text\" data-f=\"price\" value=\"" + escapeHtml(d.price) + "\" /></div>" +
+          "<div><label>Period</label><input type=\"text\" data-f=\"period\" value=\"" + escapeHtml(d.period) + "\" placeholder=\"/mo\" /></div>" +
+        "</div>" +
+        "<div><label>CTA button label</label><input type=\"text\" data-f=\"cta\" value=\"" + escapeHtml(d.cta) + "\" /></div>" +
+        "<div><label>Features (one per line)</label><textarea data-f=\"features\">" + escapeHtml(d.features) + "</textarea></div>" +
+      "</div>"
+    );
+  }
+
+  function renderPlanEditors(plans) {
+    plansMount.innerHTML = [0, 1, 2].map((i) => planFields(i, plans[i])).join("");
+    bindEditors();
+  }
+
+  function readPlans() {
+    const blocks = [...plansMount.querySelectorAll(".plan-block")];
+    const featuredVal = (plansMount.querySelector('input[name="featured"]:checked') || {}).value;
+    return blocks.map((block, i) => {
+      const get = (f) => {
+        const el = block.querySelector('[data-f="' + f + '"]');
+        return el ? el.value : "";
+      };
+      return {
+        name: get("name").trim() || ("Plan " + (i + 1)),
+        price: get("price").trim(),
+        period: get("period").trim(),
+        cta: get("cta").trim() || "Get started",
+        featured: String(featuredVal) === String(i),
+        features: get("features")
+      };
+    });
+  }
+
+  function parseBullets(text) {
+    return String(text || "")
+      .split(/\r?\n/)
+      .map((l) => l.replace(/^[-*•]\s*/, "").trim())
+      .filter(Boolean);
+  }
+
+  function buildPricingInner(opts) {
+    const t = THEMES[opts.theme] || THEMES.ink;
+    const plans = opts.plans;
+    const cur = escapeHtml(opts.currency || "$");
+    const product = escapeHtml(opts.productName || "Your product");
+    const sub = escapeHtml(opts.tagline || "Pick a plan that fits.");
+    const note = escapeHtml(opts.footerNote || "");
+
+    const cards = plans.map((p) => {
+      const bullets = parseBullets(p.features)
+        .map((b) => "<li>" + escapeHtml(b) + "</li>")
+        .join("");
+      const hi = p.featured ? " featured" : "";
+      const badge = p.featured ? '<div class="badge">Most popular</div>' : "";
+      const priceShow = p.price === "" ? "Custom" : (cur + escapeHtml(p.price));
+      const period = p.price === "" ? "" : '<span class="period">' + escapeHtml(p.period || "") + "</span>";
+      return (
+        '<article class="card' + hi + '">' +
+          badge +
+          "<h3>" + escapeHtml(p.name) + "</h3>" +
+          '<div class="price">' + priceShow + period + "</div>" +
+          "<ul>" + (bullets || "<li>Add features</li>") + "</ul>" +
+          '<a class="btn" href="#">' + escapeHtml(p.cta) + "</a>" +
+        "</article>"
+      );
+    }).join("\n");
+
+    return (
+      '<section class="pricing" data-theme="' + escapeHtml(opts.theme) + '">' +
+        '<div class="inner">' +
+          '<p class="eyebrow">' + product + "</p>" +
+          "<h2>Pricing</h2>" +
+          '<p class="sub">' + sub + "</p>" +
+          '<div class="grid">' + cards + "</div>" +
+          (note ? '<p class="note">' + note + "</p>" : "") +
+        "</div>" +
+      "</section>"
+    );
+  }
+
+  function buildThemeCss(themeKey) {
+    const t = THEMES[themeKey] || THEMES.ink;
+    return `
+.pricing {
+  --p-bg: ${t.bg};
+  --p-card: ${t.card};
+  --p-card-hi: ${t.cardHi};
+  --p-border: ${t.border};
+  --p-text: ${t.text};
+  --p-muted: ${t.muted};
+  --p-accent: ${t.accent};
+  --p-accent-text: ${t.accentText};
+  --p-btn: ${t.btn};
+  --p-btn-text: ${t.btnText};
+  --p-soft: ${t.soft};
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--p-bg);
+  color: var(--p-text);
+  padding: 56px 20px;
+  line-height: 1.5;
+}
+.pricing * { box-sizing: border-box; }
+.pricing .inner { max-width: 1040px; margin: 0 auto; text-align: center; }
+.pricing .eyebrow {
+  display: inline-block;
+  margin: 0 0 10px;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--p-accent);
+  background: var(--p-soft);
+  border: 1px solid var(--p-border);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+.pricing h2 {
+  margin: 0 0 8px;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  letter-spacing: -0.02em;
+}
+.pricing .sub {
+  margin: 0 auto 32px;
+  max-width: 42ch;
+  color: var(--p-muted);
+  font-size: 1.02rem;
+}
+.pricing .grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  text-align: left;
+}
+@media (max-width: 860px) {
+  .pricing .grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+}
+.pricing .card {
+  position: relative;
+  background: var(--p-card);
+  border: 1px solid var(--p-border);
+  border-radius: 14px;
+  padding: 22px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 100%;
+}
+.pricing .card.featured {
+  background: var(--p-card-hi);
+  border-color: var(--p-accent);
+  box-shadow: 0 0 0 1px var(--p-accent);
+}
+.pricing .badge {
+  position: absolute;
+  top: -11px;
+  left: 18px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--p-accent-text);
+  background: var(--p-accent);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+.pricing .card h3 {
+  margin: 4px 0 0;
+  font-size: 1.05rem;
+}
+.pricing .price {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.pricing .period {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--p-muted);
+  margin-left: 2px;
+}
+.pricing ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+.pricing li {
+  position: relative;
+  padding-left: 22px;
+  color: var(--p-muted);
+  font-size: 0.92rem;
+}
+.pricing li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.45em;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--p-accent);
+}
+.pricing .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  text-align: center;
+  margin-top: 6px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  background: var(--p-btn);
+  color: var(--p-btn-text);
+  border: 1px solid transparent;
+}
+.pricing .card:not(.featured) .btn {
+  background: transparent;
+  color: var(--p-text);
+  border-color: var(--p-border);
+}
+.pricing .card:not(.featured) .btn:hover {
+  border-color: var(--p-accent);
+  color: var(--p-accent);
+}
+.pricing .note {
+  margin: 28px 0 0;
+  color: var(--p-muted);
+  font-size: 0.88rem;
+}
+`.trim();
+  }
+
+  function buildFullPage(opts) {
+    const title = (opts.productName || "Pricing") + " · Pricing";
+    const css = buildThemeCss(opts.theme);
+    const body = buildPricingInner(opts);
+    return (
+      "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n" +
+      "  <meta charset=\"UTF-8\" />\n" +
+      "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n" +
+      "  <title>" + escapeHtml(title) + "</title>\n" +
+      "  <meta name=\"generator\" content=\"Indie Agent Kit / boltdoesthis Pricing Page Maker\" />\n" +
+      "  <style>\nhtml,body{margin:0;padding:0;}\n" + css + "\n  </style>\n" +
+      "</head>\n<body>\n" +
+      body + "\n" +
+      "<!-- Built with Pricing Page Maker · Indie Agent Kit / boltdoesthis -->\n" +
+      "</body>\n</html>\n"
+    );
+  }
+
+  function buildSnippet(opts) {
+    return (
+      "<!-- Pricing section · Indie Agent Kit / boltdoesthis -->\n" +
+      "<style>\n" + buildThemeCss(opts.theme) + "\n</style>\n" +
+      buildPricingInner(opts) + "\n"
+    );
+  }
+
+  function getOpts() {
+    return {
+      productName: productName.value.trim(),
+      tagline: tagline.value.trim(),
+      theme: theme.value,
+      currency: currency.value.trim() || "$",
+      footerNote: footerNote.value.trim(),
+      plans: readPlans()
+    };
+  }
+
+  function updatePreview() {
+    const html = buildFullPage(getOpts());
+    preview.srcdoc = html;
+  }
+
+  function bindEditors() {
+    plansMount.querySelectorAll("input, textarea").forEach((el) => {
+      el.addEventListener("input", updatePreview);
+      el.addEventListener("change", updatePreview);
+    });
+  }
+
+  function loadSample() {
+    productName.value = "Ship Kit";
+    tagline.value = "Simple pricing so you can ship instead of guess.";
+    theme.value = "ink";
+    currency.value = "$";
+    footerNote.value = "Cancel anytime. Free plan needs no card.";
+    renderPlanEditors(DEFAULT_PLANS);
+    updatePreview();
+    showToast("Sample loaded");
+  }
+
+  function clearAll() {
+    productName.value = "";
+    tagline.value = "";
+    theme.value = "ink";
+    currency.value = "$";
+    footerNote.value = "";
+    renderPlanEditors([
+      { name: "", price: "", period: "/mo", cta: "Get started", featured: false, features: "" },
+      { name: "", price: "", period: "/mo", cta: "Get started", featured: true, features: "" },
+      { name: "", price: "", period: "/mo", cta: "Get started", featured: false, features: "" }
+    ]);
+    updatePreview();
+    showToast("Cleared");
+  }
+
+  function downloadPage() {
+    const opts = getOpts();
+    const html = buildFullPage(opts);
+    const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = slugify(opts.productName) + "-pricing.html";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    showToast("Downloaded HTML page");
+  }
+
+  async function copySnippet() {
+    const text = buildSnippet(getOpts());
+    try {
+      await navigator.clipboard.writeText(text);
+      showToast("Snippet copied");
+    } catch (e) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+      showToast("Snippet copied");
+    }
+  }
+
+  [productName, tagline, theme, currency, footerNote].forEach((el) => {
+    el.addEventListener("input", updatePreview);
+    el.addEventListener("change", updatePreview);
+  });
+
+  document.getElementById("btnSample").addEventListener("click", loadSample);
+  document.getElementById("btnClear").addEventListener("click", clearAll);
+  document.getElementById("btnDownload").addEventListener("click", downloadPage);
+  document.getElementById("btnCopySnippet").addEventListener("click", copySnippet);
+  document.getElementById("btnRefresh").addEventListener("click", updatePreview);
+
+  loadSample();
+})();
+  </script>
+</body>
+</html>
