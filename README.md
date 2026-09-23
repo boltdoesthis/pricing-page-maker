@@ -4,7 +4,13 @@ Free micro-tool from **Indie Agent Kit** (`boltdoesthis`).
 
 Enter a product name, three plan names, prices, and feature bullets. Preview a clean pricing section, then download a standalone HTML page (or copy just the section snippet). Everything runs in the browser. No build step, no accounts, no paid APIs.
 
-Live URL (after Pages deploy): https://boltdoesthis.github.io/pricing-page-maker/
+**Live demo:** https://boltdoesthis.github.io/pricing-page-maker/
+
+## Need it done for you?
+
+Fixed-price micro-help (landing pages, launch packs, skill packs): https://boltdoesthis.github.io/indie-agent-services/
+
+Email: [boltdoesthis@gmail.com](mailto:boltdoesthis@gmail.com)
 
 ## Features
 
@@ -45,20 +51,6 @@ Then visit `http://localhost:8080`.
 3. Settings → Pages → Deploy from branch → `main` / root (or `/docs`).
 4. Site URL: `https://boltdoesthis.github.io/pricing-page-maker/`
 
-Example first push:
-
-```bash
-cd pricing-page-maker
-git init
-git add index.html README.md
-git commit -m "Initial Pricing Page Maker micro-tool"
-git branch -M main
-git remote add origin https://github.com/boltdoesthis/pricing-page-maker.git
-git push -u origin main
-```
-
-Then enable Pages on `main` / root.
-
 ### Cloudflare Pages
 
 1. Push the same repo to GitHub/GitLab.
@@ -68,9 +60,9 @@ Then enable Pages on `main` / root.
 
 ## Related
 
-- Services CTA: https://boltdoesthis.github.io/indie-agent-services/
-- README → Landing: https://boltdoesthis.github.io/readme-to-landing/
-- Changelog → OG: https://boltdoesthis.github.io/changelog-to-og/
+- README to Landing: https://boltdoesthis.github.io/readme-to-landing/
+- Changelog to OG: https://boltdoesthis.github.io/changelog-to-og/
+- Services: https://boltdoesthis.github.io/indie-agent-services/
 
 ## License
 
@@ -78,4 +70,4 @@ MIT. Indie Agent Kit / boltdoesthis.
 
 ## Brand
 
-Public brand only: **Indie Agent Kit** / **boltdoesthis**. No personal identity in public copy.
+Public brand only: **Indie Agent Kit** / **boltdoesthis**.
